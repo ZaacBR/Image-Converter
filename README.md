@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# Conversor de imagens para WebP (ZAAC)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação web para converter imagens raster para o formato **WebP** diretamente no navegador. Nenhum arquivo é enviado a um servidor: todo o processamento ocorre no seu dispositivo.
 
-Currently, two official plugins are available:
+A interface segue o **design system ZAAC** (dark-first, tipografia editorial, Tailwind CSS v4 com tokens em `@theme`).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Arrastar e soltar** ou **selecionar** várias imagens (`image/*`).
+- **Qualidade WebP** ajustável (aproximadamente 50% a 100%).
+- Conversão **individual** ou **em lote** (“Converter tudo”).
+- **Download** de cada arquivo `.webp` com nome baseado no original.
+- **Privacidade**: processamento 100% local (canvas + `createImageBitmap`).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Camada | Tecnologia |
+| --- | --- |
+| Framework | React 19 + TypeScript |
+| Estilização | Tailwind CSS v4 (`@theme` em `src/index.css`) |
+| Animações | Motion (`motion/react`) |
+| Ícones | Lucide React |
+| Bundler | Vite 8 |
+| Fontes | Google Fonts (Archivo, Space Grotesk) + Geist Variable (`@fontsource-variable/geist`) |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (recomendado: LTS atual) com npm.
+
+---
+
+## Como executar
+
+Clone ou entre na pasta do projeto e instale as dependências:
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Modo desenvolvimento (com hot reload):
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Abra o endereço exibido no terminal (geralmente `http://localhost:5173`).
+
+Build de produção:
+
+```bash
+npm run build
+```
+
+Visualizar o build gerado:
+
+```bash
+npm run preview
+```
+
+Lint:
+
+```bash
+npm run lint
+```
+
+---
+
+## Compatibilidade de navegador
+
+A exportação WebP usa `canvas.toBlob('image/webp', qualidade)`. Em navegadores que **não** suportam codificação WebP a partir do canvas, a conversão pode falhar; nesse caso, use um navegador baseado em **Chromium** (Chrome, Edge, Brave) ou verifique se está na versão mais recente do seu navegador.
+
+---
+
+## Estrutura principal
+
+| Caminho | Descrição |
+| --- | --- |
+| `src/App.tsx` | Layout da página (hero, ticker, fluxo, CTA). |
+| `src/components/WebpConverter.tsx` | Área de conversão (lista, qualidade, ações). |
+| `src/lib/convertToWebp.ts` | Lógica de conversão para WebP. |
+| `src/index.css` | Tokens do tema ZAAC e estilos base. |
+
+---
+
+## Licença
+
+Projeto privado / uso pessoal, salvo indicação em contrário.
